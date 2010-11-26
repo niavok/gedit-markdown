@@ -28,6 +28,7 @@ import sys
 import gtk
 import webkit
 import markdown
+import gconf
 
 HTML_TEMPLATE = """<html><head><meta http-equiv="content-type"
 content="text/html; charset=UTF-8" /><style type="text/css">
@@ -44,6 +45,10 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		gedit.Plugin.__init__(self)
 			
 	def activate(self, window):
+		self.window = window
+		self.gconf_root_dir = "/apps/gedit-2/plugins/markdownpreview"
+		self.load_config()
+
 		action = ("Markdown Preview",
 			  None,
 			  "Markdown Preview",
@@ -55,23 +60,21 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		windowdata = dict()
 		window.set_data("MarkdownPreviewData", windowdata)
 	
-		scrolled_window = gtk.ScrolledWindow()
-		scrolled_window.set_property("hscrollbar-policy",gtk.POLICY_AUTOMATIC)
-		scrolled_window.set_property("vscrollbar-policy",gtk.POLICY_AUTOMATIC)
-		scrolled_window.set_property("shadow-type",gtk.SHADOW_IN)
+		self.scrolled_window = gtk.ScrolledWindow()
+		self.scrolled_window.set_property("hscrollbar-policy",gtk.POLICY_AUTOMATIC)
+		self.scrolled_window.set_property("vscrollbar-policy",gtk.POLICY_AUTOMATIC)
+		self.scrolled_window.set_property("shadow-type",gtk.SHADOW_IN)
 
 		html_doc = webkit.WebView()
 		
 		html_doc.load_string(HTML_TEMPLATE % ("",), "text/html", "utf-8", "file:///")
 
-		scrolled_window.add(html_doc)
-		scrolled_window.show_all()
+		self.scrolled_window.add(html_doc)
+		self.scrolled_window.show_all()
 		
-		bottom = window.get_bottom_panel()
-		image = gtk.Image()
-		image.set_from_icon_name("gnome-mime-text-html", gtk.ICON_SIZE_MENU)
-		bottom.add_item(scrolled_window, "Markdown Preview", image)
-		windowdata["bottom_panel"] = scrolled_window
+		self.generate_preview_panel()
+
+		windowdata["preview_panel"] = self.scrolled_window
 		windowdata["html_doc"] = html_doc
 		
 		windowdata["action_group"] = gtk.ActionGroup("MarkdownPreviewActions")
@@ -89,6 +92,20 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 				gtk.UI_MANAGER_MENUITEM, 
 				True)
 	
+	def generate_preview_panel(self):
+
+		self.window.get_side_panel().remove_item(self.scrolled_window)
+		self.window.get_bottom_panel().remove_item(self.scrolled_window)
+
+		if self.display_in_side_panel:
+			panel = self.window.get_side_panel()
+		else:
+			panel = self.window.get_bottom_panel()
+
+		image = gtk.Image()
+		image.set_from_icon_name("gnome-mime-text-html", gtk.ICON_SIZE_MENU)
+		panel.add_item(self.scrolled_window, "Markdown Preview", image)
+
 	def deactivate(self, window):
 		# Retreive the data of the window object
 		windowdata = window.get_data("MarkdownPreviewData")
@@ -98,9 +115,12 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		manager.remove_ui(windowdata["ui_id"])
 		manager.remove_action_group(windowdata["action_group"])
 		
-		# Remove the bottom panel
-		bottom = window.get_bottom_panel()
-		bottom.remove_item(windowdata["bottom_panel"])
+		# Remove the preview panel
+		if self.display_in_side_panel:
+			panel = self.window.get_side_panel()
+		else:
+			panel = self.window.get_bottom_panel()
+		panel.remove_item(windowdata["preview_panel"])
 	
 	def update_preview(self, window):
 		# Retreive the data of the window object
@@ -122,9 +142,64 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		text = doc.get_text(start, end)
 		html = HTML_TEMPLATE % (markdown.markdown(text),)
 		
-		p = windowdata["bottom_panel"].get_placement()
+		p = windowdata["preview_panel"].get_placement()
 		
 		html_doc  = windowdata["html_doc"]
 		html_doc.load_string(html, "text/html", "utf-8", "file:///")
 		
-		windowdata["bottom_panel"].set_placement(p)
+		windowdata["preview_panel"].set_placement(p)
+
+
+	def is_configurable(self):
+		return True
+
+	def create_configure_dialog(self):
+		dialog = gtk.Dialog("Markup preview Configuration")
+		dialog.set_default_size(300, 200)
+
+		button_bar = gtk.HButtonBox()
+		button_bar.set_layout(gtk.BUTTONBOX_END)
+
+		cancel_button = gtk.Button(stock=gtk.STOCK_CANCEL)
+		ok_button = gtk.Button(stock=gtk.STOCK_OK)
+		display_in_side_panel_checkbox = gtk.CheckButton("Afficher dans le panneau latéral")
+		display_in_side_panel_checkbox.set_active(self.display_in_side_panel)
+
+		button_bar.pack_start(cancel_button)
+		button_bar.pack_start(ok_button)
+
+		dialog.vbox.pack_start(display_in_side_panel_checkbox)
+		dialog.vbox.child_set_property(display_in_side_panel_checkbox, "padding",5)
+
+		dialog.vbox.pack_start(button_bar)
+		dialog.vbox.child_set_property(button_bar, "expand",False)
+
+		def cancel_config(button):
+			dialog.destroy()
+
+		def valid_config(button):
+			self.display_in_side_panel = display_in_side_panel_checkbox.get_active()
+			dialog.destroy()
+			self.save_config()
+			self.generate_preview_panel()
+
+		cancel_button.connect("clicked", cancel_config)
+		ok_button.connect("clicked", valid_config)
+
+
+		dialog.vbox.show_all()
+
+		self.save_config()
+		return dialog
+
+
+	def load_config(self):
+		client = gconf.client_get_default()
+		self.display_in_side_panel = client.get_bool(self.gconf_root_dir + "/display_in_side_panel")
+
+
+	def save_config(self):
+		client = gconf.client_get_default()
+		client.add_dir(self.gconf_root_dir, gconf.CLIENT_PRELOAD_NONE)
+
+		client.set_bool(self.gconf_root_dir + "/display_in_side_panel", self.display_in_side_panel)
