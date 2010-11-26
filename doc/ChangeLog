@@ -1,0 +1,332 @@
+=== 1.1.7 ===
+2010-09-05  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* doc/démo.mdtxt: Renamed to doc/demo.txt.
+
+	[36] Renommage du fichier de démo.
+
+2010-09-05  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* doc/démo.mdtxt,
+	* src,
+	* src/exemple1.png,
+	* src/exemple2.png: Added.
+
+	* Makefile,
+	* doc/LISEZ-MOI.mdtxt,
+	* doc/exemple1.jpg,
+	* doc/exemple2.jpg: Modified.
+
+	[35] - Exemples refaits.
+	- Ajout d'un fichier démo.
+
+2010-09-05  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* doc/LISEZ-MOI.mdtxt: [34] Erreur de lien vers l'exemple 2.
+
+2010-09-05  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* doc/exemple1.jpg,
+	* doc/exemple2.jpg: Added.
+
+	* doc/exemple1.png,
+	* doc/exemple2.png: Removed.
+
+	* doc/LISEZ-MOI.mdtxt: Modified.
+
+	[33] Exemples en JPG au lieu de PNG.
+
+2010-09-05  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* Makefile: [32] Copie du fichier `LISEZ-MOI.mdtxt` sur le bureau.
+
+	* Makefile: [31] Ajout de la variable `cheminBureau`.
+
+	* .bzrignore,
+	* Makefile: [30] Ménage dans le Makefile.
+
+2010-09-03  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* locale/gedit-markdown.pot: [29] Mise à jour de la langue.
+
+2010-09-03  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* doc,
+	* doc/exemple1.png,
+	* doc/exemple2.png: Added.
+
+	* .bzrignore,
+	* Makefile: Modified.
+
+	* LISEZ-MOI.mdtxt: Renamed to doc/LISEZ-MOI.mdtxt and modified.
+	* gpl-3.0.fr.txt: Renamed to doc/gpl-3.0-fr.txt.
+	* gpl-3.0.txt: Renamed to doc/gpl-3.0.txt.
+
+	[28] - Création d'un dossier `doc`.
+	- Ménage dans le makefile et la documentation.
+
+2010-09-02  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* scripts.cli.php: Removed.
+
+	* Makefile: Modified.
+
+	[27] - Simplification du Makefile.
+	- Modification de l'adresse de la branche.
+
+=== 1.1.6 ===
+2010-07-27  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* LISEZ-MOI.mdtxt,
+	* locale/gedit-markdown.pot: [26] - Mise à jour de l'aide.
+
+	- Explication dans l'aide de la méthode pour corriger le bogue du
+	greffon *Markdown Preview*, qui ne fonctionne plus sous Ubuntu 10.04.
+	L'erreur `ImportError: No module named gtkhtml2` est causée par le
+	fait que le paquet `python-gtkhtml2` a été retiré des dépôts. Il faut
+	donc installer ce paquet manuellement.
+
+=== 1.1.5 ===
+2010-04-26  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* locale/gedit-markdown.pot: [25] `make generer`
+
+	* plugins/markdownpreview.py: [24] Merci à Daniel S. Reichenbach
+	(<http://www.jpfleury.net/gedit-markdown#comment-37>): «Fixes gedit
+	crashing on every exit.»
+
+	* LISEZ-MOI.mdtxt,
+	* Makefile: [23] Ménage.
+
+=== 1.1.4 ===
+2009-09-04  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* LISEZ-MOI.mdtxt,
+	* Makefile,
+	* locale/gedit-markdown.pot: [22] - Ajout dans le Makefile de la
+	génération d'une archive .zip
+
+	- Mise à jour de la documentation.
+
+=== 1.1.3 ===
+2009-08-03  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* LISEZ-MOI.mdtxt: [21] Ajout d'un lien dans la documentation vers la
+	[branche de développement de gedit-markdown sur
+	Launchpad](https://code.launchpad.net/gedit-markdown).
+
+=== 1.1.2 ===
+2009-08-03  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* .bzrignore: Added.
+
+	* LISEZ-MOI.mdtxt,
+	* locale/gedit-markdown.pot: Modified.
+
+	[20] Préparation pour l'[ajout dans Launchpad](https://launchpad.net
+	/gedit-markdown).
+
+2009-08-03  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* LISEZ-MOI.mdtxt: [19] Mise à jour de la description
+
+	* plugins/markdownpreview.py: [18] Précision de l'encodage utf-8 pour
+	le fichier `markdownpreview.py` du greffon `Markdown Preview`. Merci à
+	blindgaenger [pour avoir signalé le bogue](http://www.jpfleury.net
+	/gedit-markdown#comment-21).
+
+	* LISEZ-MOI.mdtxt: [17] Mise à jour du fichier de description
+
+=== 1.1.1 ===
+2009-05-20  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* Makefile,
+	* scripts.cli.php: Added.
+
+	* locale/gedit-markdown.pot: Modified.
+
+	[16] Amélioration du Makefile et mise à jour des chaînes à traduire
+
+2009-05-20  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* gedit-markdown.sh: [15] Amélioration de l'affichage dans la console
+
+	* gedit-markdown.sh: [14] Correction d'un bogue avec l'interprétation
+	des \n dans les messages
+
+2009-04-18  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* .bzrignore: Removed.
+
+	* LISEZ-MOI.mdtxt,
+	* gedit-markdown.sh,
+	* language-specs/markdown.lang,
+	* mime-packages/x-markdown.xml,
+	* plugins/markdownpreview.gedit-plugin,
+	* plugins/markdownpreview.py,
+	* snippets/markdown.xml: Modified.
+
+	* gpl.txt: Renamed to gpl-3.0.txt.
+
+	[13] Quelques modifs dans le texte des en-têtes de licence et passage
+	à la GPLv3 ou supérieure de certains fichiers encore marqués LGPL 2.1
+	ou supérieure.
+
+=== 1.1 ===
+2009-04-05  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* ChangeLog: Removed.
+
+	* .bzrignore: Modified.
+
+	[12] Suppression du fichier ChangeLog du versionnage. Je vais plutôt
+	lle générer avec un makefil.
+
+2009-04-05  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* .bzrignore,
+	* ChangeLog,
+	* gedit-markdown.sh,
+	* locale/gedit-markdown.pot: [11] Largeur max dans les messages.
+
+2009-03-31  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* locale,
+	* locale/gedit-markdown.pot: Added.
+
+	* LISEZ-MOI.mdtxt,
+	* gedit-markdown.sh: Modified.
+
+	[10] Ajout de la localisation.
+
+2009-03-31  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* .bzrignore,
+	* ChangeLog: Added.
+
+	* LISEZ-MOI.mdtxt: Modified.
+
+	[9] Ajout d'un fichier listant toutes les modifications apportées.
+
+=== 1.0.1 ===
+2009-03-17  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* language-specs/markdown.lang: [8] Utilisation d'assertions au début
+	et à la fin du regex du code en ligne et des emphases. Avantage: ça ne
+	consomme pas de caractère,
+
+	donc ça corrige le bogue de deux codes ou emphases séparées par une
+	seule espace (avant, ce n'était pas possible). Exemple:
+
+	*a* *b*
+
+	Les deux sont bien colorées, alors qu'avant seule la première emphase
+	l'était.
+
+	* LISEZ-MOI.mdtxt,
+	* language-specs/markdown.lang: [7] Correction dans le regex du code
+	en ligne (\`). En fait , je pensais qu'il fallait de part et d'atre du
+	code un nombre d'accents au
+
+	moins supérieur de un au nombre d'accents de suite à l'intérieur du
+	code. Exemple:
+
+	        ``code ` code``
+
+	mais non. Un eu très bien écrire ceci:
+
+	        ``code ``` code``
+
+	Aussi, j'ai enlevé la coloration pour 3 accents de part et d'autre du
+	code, pour ne conserver que la coloration pour un ou deux
+	accents.
+
+=== 1.0 ===
+2009-03-14  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* gedit-markdown.sh: [6] Redémarrage de Nautilus en arrière-plan +
+	redirection de la sortie dans un fichier log.
+
+2009-03-14  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* LISEZ-MOI.mdtxt,
+	* gedit-markdown.sh,
+	* gpl-3.0.fr.txt,
+	* gpl.txt,
+	* mime-packages,
+	* mime-packages/x-markdown.xml: Added.
+
+	[5] Ajout des fichiers créés par moi pour gedit-markdown.
+
+2009-03-14  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* plugins/markdownpreview.py: [4] Modification effectuée au fichier
+	markdownpreview.py:
+
+	- Correction du bogue d'affichage avec les accents (déclaration de
+	l'UTF-8 dans l'en-tête de la structure HTML).
+
+2009-03-14  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* plugins,
+	* plugins/markdown.py,
+	* plugins/markdownpreview.gedit-plugin,
+	* plugins/markdownpreview.py: Added.
+
+	[3] Ajout des fichiers originaux de l'extension Markdown Preview de
+	Michele Campeotto. Voir
+	http://live.gnome.org/Gedit/MarkdownSupport
+
+2009-03-14  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* language-specs/markdown.lang,
+	* snippets/markdown.xml: [2] Modifications apportées aux fichiers
+	d'Ulrik Sverdrup. Pour le fichier markdown.xml, j'ai seulement ajouté
+	une en-tête de
+
+	licence. Pour le fichier markdown.lang, voici les modifications
+	apportées:
+
+	- Passage à GtkSourceView 2 selon la [documentation disponible sur le
+	site de
+	Gnome](http://live.gnome.org/Gedit/NewLanguage).
+	- Ajout de la coloration pour un retour à la ligne `<br />` (deux
+	espace ou plus à la fin d'une ligne).
+	- Les marqueurs de titre `#` doivent commencer la ligne (pas d'espace
+	avant) et il doit y avoir au moins un autre caractère
+	différent.
+	- Ajout des citations.
+	- Au plus 3 espaces après un marqueur de liste.
+	- Ajout des symboles `-` et `+` pour les listes.
+	- Précision du regex de la ligne horizontale.
+	- Correction du regex por un lien (diverses précisions apportées pour
+	une meilleure conformité à Markdown).
+	- Ajout de la coloration pour les images.
+	- Précision du regex pour les 2 types d'emphase (par exemple, pas
+	d'espace autour des mots à emphaser, sinon les symboles
+	`*` et `_` n'ont pas de signification d'emphase).
+	- Ajout de la coloration pour les caractères échapés
+	(``\`*_{}[]()#+-.!``).
+	- Ajout de la coloration pour le code HTML.
+	- Suppression de la coloration pour le contexte `WikiLink`, étant
+	donné que ça ne fait pas partie de Markdown.
+	- Changement de style pour certains contextes, pour un rendu plus
+	proche du HTML par défaut (exemple: l'emphase en
+	italique).
+	- Renommage du contexte hash-header en atx-header, et création du
+	contexte setext-header.
+	- Changement du mimetype pour `text/x-markdown`.
+	- Ajout de l'extension (`globs`) `*.mdtxt`.
+	- Ajout pour Markdown du type de commentaire HTML.
+
+2009-03-14  Jean-Philippe Fleury <contact@jpfleury.net>
+
+	* language-specs,
+	* language-specs/markdown.lang,
+	* snippets,
+	* snippets/markdown.xml: Added.
+
+	[1] Ajout des fichiers originaux markdown.lang et markdown.xml d'Ulrik
+	Sverdrup. Voir
+	http://users.student.lth.se/f04us/wiki/hacks/gedit_markdown_syntax/
+
