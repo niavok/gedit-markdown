@@ -6,6 +6,7 @@
 # Auteur: Michele Campeotto
 # Copyright © Michele Campeotto, 2005, 2006.
 # Copyright © Jean-Philippe Fleury, 2009. <contact@jpfleury.net>
+# Copyright © Frédéric Bertolus, 2010. <fred.bertolus@gmail.com>
 
 # Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 # modifier suivant les termes de la GNU General Public License telle que
