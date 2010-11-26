@@ -25,7 +25,7 @@ import gedit
 
 import sys
 import gtk
-import gtkhtml2
+import webkit
 import markdown
 
 HTML_TEMPLATE = """<html><head><meta http-equiv="content-type"
@@ -59,18 +59,11 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		scrolled_window.set_property("vscrollbar-policy",gtk.POLICY_AUTOMATIC)
 		scrolled_window.set_property("shadow-type",gtk.SHADOW_IN)
 
-		html_view = gtkhtml2.View()
-		html_doc = gtkhtml2.Document()
-		html_view.set_document(html_doc)
+		html_doc = webkit.WebView()
 		
-		html_doc.clear()
-		html_doc.open_stream("text/html")
-		html_doc.write_stream(HTML_TEMPLATE % ("",))
-		html_doc.close_stream()
+		html_doc.load_string(HTML_TEMPLATE % ("",), "text/html", "utf-8", "file:///")
 
-		scrolled_window.set_hadjustment(html_view.get_hadjustment())
-		scrolled_window.set_vadjustment(html_view.get_vadjustment())
-		scrolled_window.add(html_view)
+		scrolled_window.add(html_doc)
 		scrolled_window.show_all()
 		
 		bottom = window.get_bottom_panel()
@@ -130,10 +123,7 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		
 		p = windowdata["bottom_panel"].get_placement()
 		
-		html_doc = windowdata["html_doc"]
-		html_doc.clear()
-		html_doc.open_stream("text/html")
-		html_doc.write_stream(html)
-		html_doc.close_stream()
+		html_doc  = windowdata["html_doc"]
+		html_doc.load_string(html, "text/html", "utf-8", "file:///")
 		
 		windowdata["bottom_panel"].set_placement(p)
