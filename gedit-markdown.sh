@@ -3,6 +3,7 @@
 # Le fichier gedit-markdown.sh fait partie de gedit-markdown.
 # Auteur: Jean-Philippe Fleury <contact@jpfleury.net>
 # Copyright © Jean-Philippe Fleury, 2009.
+# Copyright © Frédéric Bertolus, 2010.
 
 # Ce programme est un logiciel libre; vous pouvez le redistribuer ou le
 # modifier suivant les termes de la GNU General Public License telle que
@@ -87,11 +88,18 @@ if [[ $1 == "installer" ]]; then
 		fi
 	done
 	
+	link=""
+	if [[ $2 == "dev" ]]; then
+		link="-s"
+	fi
 	# Copie des fichiers
-	cp -a language-specs/* $rep_language_specs
-	cp -a mime-packages/* $rep_mime_packages
-	cp -a plugins/* $rep_plugins
-	cp -a snippets/* $rep_snippets
+	current_path=$(pwd)
+	cd $rep_plugins
+	
+	cp -a $link $current_path/language-specs/* $rep_language_specs
+	cp -a $link $current_path/mime-packages/* $rep_mime_packages
+	cp -a $link $current_path/plugins/* $rep_plugins
+	cp -a $link $current_path/snippets/* $rep_snippets
 	
 	echo -en "\033[1m"
 	echo ""
