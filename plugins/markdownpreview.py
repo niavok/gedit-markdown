@@ -110,6 +110,7 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		image = gtk.Image()
 		image.set_from_icon_name("gnome-mime-text-html", gtk.ICON_SIZE_MENU)
 		panel.add_item(self.scrolled_window, "Markdown Preview", image)
+		panel.activate_item(self.scrolled_window)
 
 	def deactivate(self, window):
 		# Retreive the data of the window object
