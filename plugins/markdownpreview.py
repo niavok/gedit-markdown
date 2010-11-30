@@ -30,7 +30,7 @@ import webkit
 import markdown
 import gconf
 
-HTML_TEMPLATE = """<html><head><meta http-equiv="content-type"
+DEFAULT_HTML_TEMPLATE = """<html><head><meta http-equiv="content-type"
 content="text/html; charset=UTF-8" /><style type="text/css">
 body { background-color: #fff; padding: 8px; }
 p, div { margin: 0em; }
@@ -38,6 +38,11 @@ p + p, p + div, div + p, div + div { margin-top: 0.8em; }
 blockquote { padding-left: 12px; padding-right: 12px; }
 pre { padding: 12px; }
 </style></head><body>%s</body></html>"""
+
+CUSTOM_CSS_HTML_TEMPLATE = """<html><head><meta http-equiv="content-type"
+content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="%s">
+</head><body>%s</body></html>"""
 
 class MarkdownPreviewPlugin(gedit.Plugin):
 
@@ -67,7 +72,7 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 
 		html_doc = webkit.WebView()
 		
-		html_doc.load_string(HTML_TEMPLATE % ("",), "text/html", "utf-8", "file:///")
+		html_doc.load_string(DEFAULT_HTML_TEMPLATE % ("",), "text/html", "utf-8", "file:///")
 
 		self.scrolled_window.add(html_doc)
 		self.scrolled_window.show_all()
@@ -140,8 +145,14 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 			end = doc.get_iter_at_mark(doc.get_selection_bound())
 		
 		text = doc.get_text(start, end)
-		html = HTML_TEMPLATE % (markdown.markdown(text),)
-		
+
+		markdown_text = markdown.markdown(text)
+
+		if self.css_path is None:
+			html = DEFAULT_HTML_TEMPLATE % (markdown_text,)
+		else:
+			html = CUSTOM_CSS_HTML_TEMPLATE % (self.css_path, markdown_text)
+
 		p = windowdata["preview_panel"].get_placement()
 		
 		html_doc  = windowdata["html_doc"]
@@ -162,14 +173,34 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 
 		cancel_button = gtk.Button(stock=gtk.STOCK_CANCEL)
 		ok_button = gtk.Button(stock=gtk.STOCK_OK)
+
 		display_in_side_panel_checkbox = gtk.CheckButton("Afficher dans le panneau latéral")
 		display_in_side_panel_checkbox.set_active(self.display_in_side_panel)
+
+		css_path_file_chooser = gtk.FileChooserButton("CSS path")
+		css_path_label = gtk.Label("CSS path:")
+		css_path_box = gtk.HBox()
+		css_path_box.pack_start(css_path_label)
+		css_path_box.pack_start(css_path_file_chooser)
+		css_path_box.child_set_property(css_path_label, "fill",False)
+		css_path_box.child_set_property(css_path_label, "expand",False)
+
+		if self.css_path is not None:
+			css_path_file_chooser.set_filename(self.css_path)
+
 
 		button_bar.pack_start(cancel_button)
 		button_bar.pack_start(ok_button)
 
 		dialog.vbox.pack_start(display_in_side_panel_checkbox)
 		dialog.vbox.child_set_property(display_in_side_panel_checkbox, "padding",5)
+
+
+
+
+		dialog.vbox.pack_start(css_path_box)
+		dialog.vbox.child_set_property(css_path_box, "padding",5)
+		dialog.vbox.child_set_property(css_path_box, "expand",False)
 
 		dialog.vbox.pack_start(button_bar)
 		dialog.vbox.child_set_property(button_bar, "expand",False)
@@ -179,9 +210,12 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 
 		def valid_config(button):
 			self.display_in_side_panel = display_in_side_panel_checkbox.get_active()
+			self.css_path = css_path_file_chooser.get_filename()
+			print self.css_path
 			dialog.destroy()
 			self.save_config()
 			self.generate_preview_panel()
+
 
 		cancel_button.connect("clicked", cancel_config)
 		ok_button.connect("clicked", valid_config)
@@ -189,17 +223,22 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 
 		dialog.vbox.show_all()
 
-		self.save_config()
 		return dialog
 
 
 	def load_config(self):
 		client = gconf.client_get_default()
 		self.display_in_side_panel = client.get_bool(self.gconf_root_dir + "/display_in_side_panel")
-
+		self.css_path = client.get_string(self.gconf_root_dir + "/css_path")
+		if self.css_path == "":
+			self.css_path = None
 
 	def save_config(self):
 		client = gconf.client_get_default()
 		client.add_dir(self.gconf_root_dir, gconf.CLIENT_PRELOAD_NONE)
 
 		client.set_bool(self.gconf_root_dir + "/display_in_side_panel", self.display_in_side_panel)
+		if self.css_path is not None:
+			client.set_string(self.gconf_root_dir + "/css_path", self.css_path)
+		else:
+			client.set_string(self.gconf_root_dir + "/css_path","")
