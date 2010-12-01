@@ -29,19 +29,20 @@ import gtk
 import webkit
 import markdown
 import gconf
+import os
 
 DEFAULT_HTML_TEMPLATE = """<html><head><meta http-equiv="content-type"
-content="text/html; charset=UTF-8" /><style type="text/css">
-body { background-color: #fff; padding: 8px; }
-p, div { margin: 0em; }
-p + p, p + div, div + p, div + div { margin-top: 0.8em; }
-blockquote { padding-left: 12px; padding-right: 12px; }
-pre { padding: 12px; }
-</style></head><body>%s</body></html>"""
+content="text/html; charset=UTF-8" />
+<link rel="stylesheet" type="text/css" href="%s/.gnome2/gedit/plugins/markdown_css/style.css">
+<link rel="stylesheet" type="text/css" href="%s/.gnome2/gedit/plugins/markdown_css/toc.css">
+<link rel="stylesheet" type="text/css" href="%s/.gnome2/gedit/plugins/markdown_css/pygments_style.css">
+</head><body>%s</body></html>"""
 
 CUSTOM_CSS_HTML_TEMPLATE = """<html><head><meta http-equiv="content-type"
 content="text/html; charset=UTF-8" />
 <link rel="stylesheet" type="text/css" href="%s">
+<link rel="stylesheet" type="text/css" href="%s/.gnome2/gedit/plugins/markdown_css/toc.css">
+<link rel="stylesheet" type="text/css" href="%s/.gnome2/gedit/plugins/markdown_css/pygments_style.css">
 </head><body>%s</body></html>"""
 
 class MarkdownPreviewPlugin(gedit.Plugin):
@@ -72,7 +73,8 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 
 		html_doc = webkit.WebView()
 		
-		html_doc.load_string(DEFAULT_HTML_TEMPLATE % ("",), "text/html", "utf-8", "file:///")
+		home = os.path.expanduser("~")
+		html_doc.load_string(DEFAULT_HTML_TEMPLATE % (home, home, home, ""), "text/html", "utf-8", "file:///")
 
 		self.scrolled_window.add(html_doc)
 		self.scrolled_window.show_all()
@@ -147,12 +149,15 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		
 		text = doc.get_text(start, end)
 
-		markdown_text = markdown.markdown(text)
+		extensions = ['codehilite', 'toc']
+		markdown_text = markdown.markdown(text, extensions)
+
+		home = os.path.expanduser("~")
 
 		if self.css_path is None:
-			html = DEFAULT_HTML_TEMPLATE % (markdown_text,)
+			html = DEFAULT_HTML_TEMPLATE % (home, home, home, markdown_text)
 		else:
-			html = CUSTOM_CSS_HTML_TEMPLATE % (self.css_path, markdown_text)
+			html = CUSTOM_CSS_HTML_TEMPLATE % (self.css_path, home, home, markdown_text)
 
 		p = windowdata["preview_panel"].get_placement()
 		
@@ -212,7 +217,6 @@ class MarkdownPreviewPlugin(gedit.Plugin):
 		def valid_config(button):
 			self.display_in_side_panel = display_in_side_panel_checkbox.get_active()
 			self.css_path = css_path_file_chooser.get_filename()
-			print self.css_path
 			dialog.destroy()
 			self.save_config()
 			self.generate_preview_panel()
